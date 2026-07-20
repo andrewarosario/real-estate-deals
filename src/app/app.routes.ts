@@ -18,33 +18,8 @@ export const routes: Routes = [
       import('./layout/app-shell/app-shell.component').then(
         (component) => component.AppShellComponent,
       ),
-    children: [
-      {
-        path: 'deals',
-        title: 'Deal book | TermSheet',
-        loadComponent: () =>
-          import('./features/deals/deal-list/deal-list.component').then(
-            (component) => component.DealListComponent,
-          ),
-      },
-      {
-        path: 'deals/new',
-        title: 'Add deal | TermSheet',
-        loadComponent: () =>
-          import('./features/deals/deal-form/deal-form.component').then(
-            (component) => component.DealFormComponent,
-          ),
-      },
-      {
-        path: 'deals/:id/edit',
-        title: 'Edit deal | TermSheet',
-        loadComponent: () =>
-          import('./features/deals/deal-form/deal-form.component').then(
-            (component) => component.DealFormComponent,
-          ),
-      },
-      { path: '', pathMatch: 'full', redirectTo: 'deals' },
-    ],
+    loadChildren: () =>
+      import('./features/deals/deals.routes').then((routeModule) => routeModule.DEALS_ROUTES),
   },
   { path: '**', redirectTo: '' },
 ];
