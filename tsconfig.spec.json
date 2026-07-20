@@ -3,8 +3,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
+    "module": "CommonJS",
+    "target": "ES2016",
     "types": [
-      "jasmine"
+      "jest"
     ]
   },
   "include": [

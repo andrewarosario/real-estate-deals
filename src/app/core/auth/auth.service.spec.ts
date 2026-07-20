@@ -25,11 +25,11 @@ describe('AuthService', () => {
   });
 
   it('accepts only the labeled demo credential', () => {
-    expect(service.login('wrong', 'wrong')).toBeFalse();
-    expect(service.isAuthenticated()).toBeFalse();
+    expect(service.login('wrong', 'wrong')).toBe(false);
+    expect(service.isAuthenticated()).toBe(false);
 
-    expect(service.login(DEMO_CREDENTIALS.username, DEMO_CREDENTIALS.password)).toBeTrue();
-    expect(service.isAuthenticated()).toBeTrue();
+    expect(service.login(DEMO_CREDENTIALS.username, DEMO_CREDENTIALS.password)).toBe(true);
+    expect(service.isAuthenticated()).toBe(true);
     expect(sessionValue).toBe('true');
   });
 
@@ -37,7 +37,7 @@ describe('AuthService', () => {
     service.login(DEMO_CREDENTIALS.username, DEMO_CREDENTIALS.password);
     service.logout();
 
-    expect(service.isAuthenticated()).toBeFalse();
+    expect(service.isAuthenticated()).toBe(false);
     expect(sessionValue).toBeNull();
   });
 });

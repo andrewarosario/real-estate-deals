@@ -27,7 +27,7 @@ describe('DealStoreService', () => {
 
   it('starts with the realistic sample deal book', () => {
     expect(service.dealsSnapshot.length).toBe(8);
-    expect(service.dealsSnapshot.some((deal) => deal.name === 'Harbor Exchange')).toBeTrue();
+    expect(service.dealsSnapshot.some((deal) => deal.name === 'Harbor Exchange')).toBe(true);
   });
 
   it('adds, updates, deletes, and persists a deal', () => {
@@ -49,7 +49,7 @@ describe('DealStoreService', () => {
     });
     expect(service.findById(created.id)?.name).toBe('Market Square Updated');
 
-    expect(service.delete(created.id)).toBeTrue();
+    expect(service.delete(created.id)).toBe(true);
     expect(service.findById(created.id)).toBeUndefined();
   });
 

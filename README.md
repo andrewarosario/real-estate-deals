@@ -41,6 +41,9 @@ npm run build
 npm run test:ci
 ```
 
+Tests run with Jest through `jest-preset-angular`. Use `npm test` for a single local run,
+`npm run test:watch` while developing, or `npm run test:coverage` for a coverage report.
+
 ## Architecture
 
 - Standalone Angular components and lazy-loaded feature routes.

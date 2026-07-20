@@ -17,14 +17,14 @@ describe('Deal rules', () => {
   });
 
   it('returns an undefined numeric result for a non-positive Purchase Price', () => {
-    expect(Number.isNaN(calculateCapRate(100, 0))).toBeTrue();
+    expect(Number.isNaN(calculateCapRate(100, 0))).toBe(true);
   });
 
   it('treats the inclusive 5% to 12% band as typical', () => {
-    expect(isTypicalCapRate(5)).toBeTrue();
-    expect(isTypicalCapRate(12)).toBeTrue();
-    expect(isTypicalCapRate(4.99)).toBeFalse();
-    expect(isTypicalCapRate(12.01)).toBeFalse();
+    expect(isTypicalCapRate(5)).toBe(true);
+    expect(isTypicalCapRate(12)).toBe(true);
+    expect(isTypicalCapRate(4.99)).toBe(false);
+    expect(isTypicalCapRate(12.01)).toBe(false);
   });
 
   it('combines case-insensitive name and inclusive price filters', () => {
@@ -38,7 +38,7 @@ describe('Deal rules', () => {
       minimumPrice: 10_000_001,
     };
 
-    expect(dealMatchesFilters(deal, matchingFilters)).toBeTrue();
-    expect(dealMatchesFilters(deal, failingFilters)).toBeFalse();
+    expect(dealMatchesFilters(deal, matchingFilters)).toBe(true);
+    expect(dealMatchesFilters(deal, failingFilters)).toBe(false);
   });
 });

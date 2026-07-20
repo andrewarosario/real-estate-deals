@@ -12,6 +12,7 @@ This is a strict Angular 17 application for a browser-local real estate deal boo
 - Keep domain calculations and predicates pure.
 - Keep browser persistence behind `BrowserStorageService`.
 - Preserve the demo-only authentication warning; browser guards are not production security.
+- Write tests with Jest and `jest-preset-angular`; do not add Jasmine or Karma dependencies.
 
 ## Accessibility
 
