@@ -43,6 +43,8 @@ npm run test:ci
 
 Tests run with Jest through `jest-preset-angular`. Use `npm test` for a single local run,
 `npm run test:watch` while developing, or `npm run test:coverage` for a coverage report.
+The CI suite enforces 100% statement, function, and line coverage plus 90% branch coverage
+across the application TypeScript source.
 
 ## Architecture
 

@@ -17,4 +17,10 @@ describe('HighlightPipe', () => {
       { text: 'Harbor Exchange', match: false },
     ]);
   });
+
+  it('returns plain text when the query is not present', () => {
+    expect(pipe.transform('Harbor Exchange', 'office')).toEqual([
+      { text: 'Harbor Exchange', match: false },
+    ]);
+  });
 });

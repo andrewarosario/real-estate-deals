@@ -5,6 +5,9 @@ module.exports = {
     tsconfig: '<rootDir>/tsconfig.spec.json',
   }),
   clearMocks: true,
+  testEnvironmentOptions: {
+    pretendToBeVisual: true,
+  },
   setupFilesAfterEnv: ['<rootDir>/setup-jest.ts'],
   testMatch: ['<rootDir>/src/**/*.spec.ts'],
   coverageDirectory: '<rootDir>/coverage',
@@ -12,4 +15,12 @@ module.exports = {
     '<rootDir>/src/app/**/*.ts',
     '!<rootDir>/src/app/**/*.spec.ts',
   ],
+  coverageThreshold: {
+    global: {
+      branches: 90,
+      functions: 100,
+      lines: 100,
+      statements: 100,
+    },
+  },
 };

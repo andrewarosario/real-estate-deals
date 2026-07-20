@@ -40,4 +40,12 @@ describe('AuthService', () => {
     expect(service.isAuthenticated()).toBe(false);
     expect(sessionValue).toBeNull();
   });
+
+  it('restores an authenticated browser session', () => {
+    sessionValue = 'true';
+
+    const restoredService = TestBed.runInInjectionContext(() => new AuthService());
+
+    expect(restoredService.isAuthenticated()).toBe(true);
+  });
 });

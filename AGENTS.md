@@ -19,3 +19,4 @@ Examples:
 
 - Use Jest with `jest-preset-angular` for unit tests.
 - Do not reintroduce Jasmine or Karma.
+- Keep application coverage at 100% for statements, functions, and lines, and at least 90% for branches.
