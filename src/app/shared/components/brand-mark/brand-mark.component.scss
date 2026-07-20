@@ -1,0 +1,63 @@
+:host {
+  display: inline-flex;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-ink);
+}
+
+.brand__glyph {
+  display: grid;
+  width: 32px;
+  gap: 4px;
+}
+
+.brand__glyph span {
+  display: block;
+  height: 4px;
+  border-radius: 10px;
+  background: var(--color-blue);
+}
+
+.brand__glyph span:nth-child(2) {
+  width: 74%;
+  background: var(--color-mint);
+}
+
+.brand__glyph span:nth-child(3) {
+  width: 48%;
+  background: currentColor;
+}
+
+.brand__text {
+  font-size: 1.22rem;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+}
+
+.brand__text span {
+  color: var(--color-blue);
+}
+
+.brand--inverse {
+  color: #fff;
+}
+
+.brand--inverse .brand__text span {
+  color: var(--color-mint);
+}
+
+.brand--compact {
+  gap: 9px;
+}
+
+.brand--compact .brand__glyph {
+  width: 26px;
+}
+
+.brand--compact .brand__text {
+  font-size: 1.05rem;
+}

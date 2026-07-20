@@ -1,0 +1,278 @@
+@if (viewModel$ | async; as viewModel) {
+  <section class="page-lead" aria-labelledby="deal-book-title">
+    <div>
+      <span class="eyebrow">Underwriting view</span>
+      <h1 id="deal-book-title">Deal book</h1>
+      <p>Compare income performance and keep each opportunity moving.</p>
+    </div>
+    <a class="primary-action" routerLink="/deals/new" data-testid="add-deal-link">
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>
+      Add deal
+    </a>
+  </section>
+
+  <section class="portfolio-line" aria-label="Deal book summary">
+    <div>
+      <span>Deals in review</span>
+      <strong class="data-value">{{ viewModel.allDeals.length }}</strong>
+    </div>
+    <div>
+      <span>Purchase volume</span>
+      <strong class="data-value">
+        {{ viewModel.totalPurchasePrice | currency: 'USD' : 'symbol' : '1.0-0' }}
+      </strong>
+    </div>
+    <div>
+      <span>Within typical band</span>
+      <strong class="data-value">{{ viewModel.typicalCount }} / {{ viewModel.allDeals.length }}</strong>
+    </div>
+    <p>
+      <span aria-hidden="true"></span>
+      Saved locally in this browser
+    </p>
+  </section>
+
+  <section
+    class="filter-workbench"
+    [class.filter-workbench--expanded]="filtersExpanded()"
+    aria-labelledby="filter-title"
+  >
+    <div class="filter-workbench__heading">
+      <div>
+        <span class="filter-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" /></svg>
+        </span>
+        <div>
+          <h2 id="filter-title">Filter deals</h2>
+          <p>{{ viewModel.filteredDeals.length }} of {{ viewModel.allDeals.length }} shown</p>
+        </div>
+      </div>
+      <div class="filter-workbench__actions">
+        @if (hasActiveFilters(viewModel.filters)) {
+          <button type="button" class="clear-filter" (click)="clearFilters()">Clear filters</button>
+        }
+        <button
+          type="button"
+          class="filter-toggle"
+          [attr.aria-expanded]="filtersExpanded()"
+          aria-controls="deal-filter-form"
+          (click)="filtersExpanded.set(!filtersExpanded())"
+        >
+          {{ filtersExpanded() ? 'Hide' : 'Show' }} filters
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5" /></svg>
+        </button>
+      </div>
+    </div>
+
+    <form
+      id="deal-filter-form"
+      class="filter-form"
+      [formGroup]="filterForm"
+      aria-label="Deal filters"
+    >
+      <div class="filter-field filter-field--name">
+        <label for="deal-name-filter">Deal name</label>
+        <div class="input-with-icon">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-4-4"></path>
+          </svg>
+          <input
+            id="deal-name-filter"
+            type="search"
+            formControlName="name"
+            placeholder="Search by deal name"
+            autocomplete="off"
+          >
+        </div>
+      </div>
+
+      <div class="filter-field">
+        <label for="minimum-price">Minimum price</label>
+        <div class="money-input">
+          <span aria-hidden="true">$</span>
+          <input
+            id="minimum-price"
+            type="number"
+            min="0"
+            step="100000"
+            inputmode="decimal"
+            formControlName="minimumPrice"
+            placeholder="No minimum"
+          >
+        </div>
+      </div>
+
+      <div class="filter-field">
+        <label for="maximum-price">Maximum price</label>
+        <div class="money-input">
+          <span aria-hidden="true">$</span>
+          <input
+            id="maximum-price"
+            type="number"
+            min="0"
+            step="100000"
+            inputmode="decimal"
+            formControlName="maximumPrice"
+            placeholder="No maximum"
+          >
+        </div>
+      </div>
+    </form>
+
+    @if (filterForm.hasError('invalidPriceRange')) {
+      <p class="filter-error" role="alert">Minimum price cannot be greater than maximum price.</p>
+    }
+  </section>
+
+  @if (viewModel.filteredDeals.length > 0) {
+    <section class="deal-surface" aria-label="Filtered deals">
+      <div class="deal-table-wrap">
+        <table>
+          <caption class="sr-only">Real estate deals matching the active filters</caption>
+          <thead>
+            <tr>
+              <th scope="col">Deal</th>
+              <th scope="col">Purchase price</th>
+              <th scope="col">NOI</th>
+              <th scope="col">Cap rate</th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (deal of viewModel.filteredDeals; track deal.id) {
+              <tr>
+                <td>
+                  <strong class="deal-name">
+                    @for (segment of deal.name | highlight: viewModel.filters.name; track $index) {
+                      @if (segment.match) {
+                        <mark>{{ segment.text }}</mark>
+                      } @else {
+                        {{ segment.text }}
+                      }
+                    }
+                  </strong>
+                  <span class="deal-address">{{ deal.address }}</span>
+                </td>
+                <td
+                  class="data-value price-value"
+                  [appPriceMatch]="hasPriceFilter(viewModel.filters)"
+                >
+                  {{ deal.purchasePrice | currency: 'USD' : 'symbol' : '1.0-0' }}
+                </td>
+                <td class="data-value">
+                  {{ deal.noi | currency: 'USD' : 'symbol' : '1.0-0' }}
+                </td>
+                <td>
+                  <app-cap-rate-rail
+                    [rate]="calculateCapRate(deal.noi, deal.purchasePrice)"
+                    [compact]="true"
+                  />
+                </td>
+                <td>
+                  <div class="row-actions">
+                    <a [routerLink]="['/deals', deal.id, 'edit']" [attr.aria-label]="'Edit ' + deal.name">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="m4 20 4.5-1 10-10a2.1 2.1 0 0 0-3-3l-10 10L4 20Z"></path>
+                        <path d="m14 7 3 3"></path>
+                      </svg>
+                    </a>
+                    <button
+                      type="button"
+                      [attr.aria-label]="'Delete ' + deal.name"
+                      (click)="pendingDelete.set(deal)"
+                    >
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path>
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mobile-deals">
+        @for (deal of viewModel.filteredDeals; track deal.id) {
+          <article class="deal-card">
+            <div class="deal-card__heading">
+              <div>
+                <h2>
+                  @for (segment of deal.name | highlight: viewModel.filters.name; track $index) {
+                    @if (segment.match) {
+                      <mark>{{ segment.text }}</mark>
+                    } @else {
+                      {{ segment.text }}
+                    }
+                  }
+                </h2>
+                <p>{{ deal.address }}</p>
+              </div>
+              <span class="deal-card__index data-value" aria-hidden="true">
+                {{ $index + 1 < 10 ? '0' + ($index + 1) : $index + 1 }}
+              </span>
+            </div>
+
+            <dl class="deal-card__figures">
+              <div>
+                <dt>Purchase price</dt>
+                <dd class="data-value" [appPriceMatch]="hasPriceFilter(viewModel.filters)">
+                  {{ deal.purchasePrice | currency: 'USD' : 'symbol' : '1.0-0' }}
+                </dd>
+              </div>
+              <div>
+                <dt>NOI</dt>
+                <dd class="data-value">{{ deal.noi | currency: 'USD' : 'symbol' : '1.0-0' }}</dd>
+              </div>
+            </dl>
+
+            <div class="deal-card__rate">
+              <span>Cap rate</span>
+              <app-cap-rate-rail [rate]="calculateCapRate(deal.noi, deal.purchasePrice)" />
+            </div>
+
+            <div class="deal-card__actions">
+              <a [routerLink]="['/deals', deal.id, 'edit']">Edit deal</a>
+              <button type="button" (click)="pendingDelete.set(deal)">Delete</button>
+            </div>
+          </article>
+        }
+      </div>
+
+      <footer class="deal-surface__footer">
+        <span>Showing {{ viewModel.filteredDeals.length }} deals</span>
+        <button type="button" (click)="resetRequested.set(true)">Reset demo data</button>
+      </footer>
+    </section>
+  } @else {
+    <section class="empty-state">
+      <span class="empty-state__glyph" aria-hidden="true"></span>
+      <h2>No deals match these filters</h2>
+      <p>Adjust the deal name or purchase price range to bring opportunities back into view.</p>
+      <button type="button" (click)="clearFilters()">Clear filters</button>
+    </section>
+  }
+
+  @if (pendingDelete(); as deal) {
+    <app-confirm-dialog
+      title="Delete this deal?"
+      [message]="deal.name + ' will be removed from this browser. This action cannot be undone.'"
+      confirmLabel="Delete deal"
+      (cancelled)="pendingDelete.set(null)"
+      (confirmed)="confirmDelete()"
+    />
+  }
+
+  @if (resetRequested()) {
+    <app-confirm-dialog
+      title="Restore the sample deal book?"
+      message="All local changes will be replaced by the original eight sample deals."
+      confirmLabel="Restore sample deals"
+      tone="primary"
+      (cancelled)="resetRequested.set(false)"
+      (confirmed)="confirmReset()"
+    />
+  }
+}

@@ -1,0 +1,107 @@
+<main class="login-page">
+  <section class="login-story" aria-labelledby="login-story-title">
+    <div class="login-story__grid" aria-hidden="true"></div>
+    <div class="login-story__content">
+      <app-brand-mark [inverse]="true" />
+
+      <div class="login-story__message">
+        <span class="eyebrow">Real estate underwriting</span>
+        <h1 id="login-story-title">Keep every deal in clear financial focus.</h1>
+        <p>
+          Review purchase price, NOI, and cap rate in one disciplined deal book—from first
+          look to final decision.
+        </p>
+      </div>
+
+      <div class="market-band" aria-label="Typical capitalization rate reference">
+        <span class="market-band__label">Market lens</span>
+        <div class="market-band__track" aria-hidden="true">
+          <span></span>
+          <i></i>
+        </div>
+        <div class="market-band__values data-value">
+          <span>5%</span>
+          <strong>Typical cap-rate band</strong>
+          <span>12%</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="login-panel" aria-labelledby="login-title">
+    <div class="login-panel__mobile-brand">
+      <app-brand-mark />
+    </div>
+
+    <div class="login-panel__content">
+      <span class="eyebrow">Private deal book</span>
+      <h2 id="login-title">Welcome back</h2>
+      <p class="login-panel__intro">Sign in with the demo account to continue.</p>
+
+      <button type="button" class="demo-account" (click)="fillDemoCredentials()">
+        <span class="demo-account__icon" aria-hidden="true">TS</span>
+        <span>
+          <strong>Use demo credentials</strong>
+          <small>{{ demoCredentials.username }} / {{ demoCredentials.password }}</small>
+        </span>
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6" /></svg>
+      </button>
+
+      <div class="divider"><span>or enter them manually</span></div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <div class="field">
+          <label for="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            autocomplete="username"
+            placeholder="Enter your username"
+            appAutofocus
+            [attr.aria-invalid]="form.controls.username.invalid && form.controls.username.touched"
+          >
+          @if (form.controls.username.invalid && form.controls.username.touched) {
+            <span class="field__error">Enter the demo username.</span>
+          }
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="password-field">
+            <input
+              id="password"
+              [type]="passwordVisible() ? 'text' : 'password'"
+              formControlName="password"
+              autocomplete="current-password"
+              placeholder="Enter your password"
+              [attr.aria-invalid]="form.controls.password.invalid && form.controls.password.touched"
+            >
+            <button
+              type="button"
+              [attr.aria-label]="passwordVisible() ? 'Hide password' : 'Show password'"
+              (click)="passwordVisible.set(!passwordVisible())"
+            >
+              {{ passwordVisible() ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          @if (form.controls.password.invalid && form.controls.password.touched) {
+            <span class="field__error">Enter the demo password.</span>
+          }
+        </div>
+
+        @if (invalidCredentials()) {
+          <div class="login-error" role="alert">
+            Those credentials do not match the demo account. Use the values shown above.
+          </div>
+        }
+
+        <button type="submit" class="sign-in-button">Open deal book</button>
+      </form>
+
+      <p class="demo-notice">
+        Demo only. Authentication and deal data stay in this browser and are not production-secure.
+      </p>
+    </div>
+  </section>
+</main>

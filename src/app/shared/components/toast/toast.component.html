@@ -1,0 +1,7 @@
+@if (notifications.notification$ | async; as notification) {
+  <div class="toast" [class.toast--info]="notification.tone === 'info'" role="status">
+    <span class="toast__icon" aria-hidden="true">✓</span>
+    <span>{{ notification.message }}</span>
+    <button type="button" aria-label="Dismiss notification" (click)="notifications.dismiss()">×</button>
+  </div>
+}

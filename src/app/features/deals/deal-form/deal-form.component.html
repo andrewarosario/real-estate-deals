@@ -1,0 +1,182 @@
+<a class="back-link" routerLink="/deals">
+  <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+  Back to deal book
+</a>
+
+<section class="form-lead" aria-labelledby="deal-form-title">
+  <span class="eyebrow">{{ editingDeal() ? 'Deal maintenance' : 'New opportunity' }}</span>
+  <h1 id="deal-form-title">{{ editingDeal() ? 'Edit deal' : 'Add a deal' }}</h1>
+  <p>
+    {{
+      editingDeal()
+        ? 'Update the underwriting inputs. Cap rate will be recalculated automatically.'
+        : 'Capture the core underwriting inputs. You can keep adding deals after this one.'
+    }}
+  </p>
+</section>
+
+<div class="form-layout">
+  <form class="deal-form" [formGroup]="form" (ngSubmit)="submit('list')" novalidate>
+    <div class="form-section-heading">
+      <span class="section-number data-value">01</span>
+      <div>
+        <h2>Property identity</h2>
+        <p>Name the opportunity and locate the asset.</p>
+      </div>
+    </div>
+
+    <div class="field-grid">
+      <div class="field field--full">
+        <label for="deal-name">Deal name</label>
+        <input
+          id="deal-name"
+          type="text"
+          formControlName="name"
+          placeholder="e.g. Harbor Exchange"
+          autocomplete="off"
+          appAutofocus
+          [attr.aria-invalid]="form.controls.name.invalid && form.controls.name.touched"
+        >
+        <div class="field__meta">
+          @if (form.controls.name.invalid && form.controls.name.touched) {
+            <span class="field__error">
+              {{ form.controls.name.hasError('required') ? 'Enter a deal name.' : 'Use 80 characters or fewer.' }}
+            </span>
+          } @else {
+            <span>Use the name your team will recognize.</span>
+          }
+          <span class="data-value">{{ form.controls.name.value.length }}/80</span>
+        </div>
+      </div>
+
+      <div class="field field--full">
+        <label for="deal-address">Address</label>
+        <input
+          id="deal-address"
+          type="text"
+          formControlName="address"
+          placeholder="Street, city, state"
+          autocomplete="street-address"
+          [attr.aria-invalid]="form.controls.address.invalid && form.controls.address.touched"
+        >
+        @if (form.controls.address.invalid && form.controls.address.touched) {
+          <span class="field__error">
+            {{
+              form.controls.address.hasError('required')
+                ? 'Enter the property address.'
+                : 'Use 160 characters or fewer.'
+            }}
+          </span>
+        }
+      </div>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <div class="form-section-heading">
+      <span class="section-number data-value">02</span>
+      <div>
+        <h2>Underwriting inputs</h2>
+        <p>Enter dollar values; TermSheet handles the rate.</p>
+      </div>
+    </div>
+
+    <div class="field-grid field-grid--financial">
+      <div class="field">
+        <label for="purchase-price">Purchase price</label>
+        <div class="financial-input">
+          <span aria-hidden="true">$</span>
+          <input
+            id="purchase-price"
+            type="number"
+            min="0.01"
+            step="1000"
+            inputmode="decimal"
+            formControlName="purchasePrice"
+            placeholder="0"
+            [attr.aria-invalid]="
+              form.controls.purchasePrice.invalid && form.controls.purchasePrice.touched
+            "
+          >
+          <small>USD</small>
+        </div>
+        @if (form.controls.purchasePrice.invalid && form.controls.purchasePrice.touched) {
+          <span class="field__error">Purchase price must be greater than $0.</span>
+        }
+      </div>
+
+      <div class="field">
+        <label for="noi">Net operating income (NOI)</label>
+        <div class="financial-input">
+          <span aria-hidden="true">$</span>
+          <input
+            id="noi"
+            type="number"
+            step="1000"
+            inputmode="decimal"
+            formControlName="noi"
+            placeholder="0"
+            [attr.aria-invalid]="form.controls.noi.invalid && form.controls.noi.touched"
+          >
+          <small>USD</small>
+        </div>
+        @if (form.controls.noi.invalid && form.controls.noi.touched) {
+          <span class="field__error">Enter NOI. Zero and negative values are allowed.</span>
+        } @else {
+          <span class="field__hint">Negative NOI is valid for a turnaround deal.</span>
+        }
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a routerLink="/deals">Cancel</a>
+      <div>
+        @if (!editingDeal()) {
+          <button type="button" class="secondary-button" (click)="submit('another')">
+            Save and add another
+          </button>
+        }
+        <button type="submit" class="primary-button" data-testid="save-deal-button">
+          {{ editingDeal() ? 'Save changes' : 'Save and view deals' }}
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <aside class="rate-preview" aria-labelledby="rate-preview-title" aria-live="polite">
+    <span class="rate-preview__eyebrow">Live calculation</span>
+    <h2 id="rate-preview-title">Cap rate</h2>
+
+    @if (capRate !== null) {
+      <app-cap-rate-rail [rate]="capRate" />
+
+      <div class="calculation data-value">
+        <span>NOI</span>
+        <i>÷</i>
+        <span>Purchase price</span>
+      </div>
+
+      <p [class.rate-preview__warning]="!capRateIsTypical">
+        @if (capRateIsTypical) {
+          This deal sits within the typical 5%–12% reference band.
+        } @else {
+          This deal is outside the typical 5%–12% band. You can still save it.
+        }
+      </p>
+    } @else {
+      <div class="rate-placeholder" aria-hidden="true">
+        <strong class="data-value">—</strong>
+        <span></span>
+      </div>
+      <p>Enter Purchase Price and NOI to see the calculated rate.</p>
+    }
+
+    <div class="rate-preview__note">
+      <svg aria-hidden="true" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M12 11v5M12 8h.01"></path>
+      </svg>
+      <span>Cap rate is derived and cannot be edited directly.</span>
+    </div>
+  </aside>
+</div>

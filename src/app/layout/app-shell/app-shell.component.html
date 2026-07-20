@@ -1,0 +1,27 @@
+<header class="app-header">
+  <div class="app-header__inner">
+    <a class="app-header__brand" routerLink="/deals" aria-label="TermSheet deal book">
+      <app-brand-mark [compact]="true" />
+    </a>
+
+    <nav class="app-header__nav" aria-label="Primary navigation">
+      <a routerLink="/deals" routerLinkActive="is-active">Deal book</a>
+    </nav>
+
+    <div class="app-header__session">
+      <span class="demo-badge"><span aria-hidden="true"></span> Local demo</span>
+      <button type="button" class="logout-button" (click)="logout()">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4M15 16l4-4-4-4M19 12H9" />
+        </svg>
+        <span>Log out</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="app-main">
+  <router-outlet />
+</main>
+
+<app-toast />

@@ -1,0 +1,158 @@
+:host {
+  display: block;
+  min-height: 100vh;
+}
+
+.app-header {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  border-bottom: 1px solid var(--color-line);
+  background: rgb(255 255 255 / 92%);
+  backdrop-filter: blur(16px);
+}
+
+.app-header__inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  width: min(100% - 40px, 1380px);
+  min-height: 68px;
+  margin-inline: auto;
+}
+
+.app-header__brand {
+  text-decoration: none;
+}
+
+.app-header__nav {
+  align-self: stretch;
+  margin-left: 44px;
+}
+
+.app-header__nav a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  color: var(--color-muted);
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.app-header__nav a::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: var(--color-blue);
+  content: '';
+  opacity: 0;
+  transform: scaleX(0.5);
+  transition: 160ms ease;
+}
+
+.app-header__nav a.is-active {
+  color: var(--color-ink);
+}
+
+.app-header__nav a.is-active::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.app-header__session {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.demo-badge span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-mint);
+  box-shadow: 0 0 0 4px rgb(34 236 207 / 18%);
+}
+
+.logout-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-blue-dark);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.logout-button:hover {
+  background: var(--color-surface-blue);
+}
+
+.logout-button svg {
+  width: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.app-main {
+  width: min(100% - 40px, 1380px);
+  margin-inline: auto;
+  padding-block: 48px 72px;
+}
+
+@media (max-width: 720px) {
+  .app-header__inner,
+  .app-main {
+    width: min(100% - 32px, 1380px);
+  }
+
+  .app-header__nav,
+  .demo-badge {
+    display: none;
+  }
+
+  .app-header__inner {
+    grid-template-columns: 1fr auto;
+    min-height: 62px;
+  }
+
+  .logout-button span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .logout-button {
+    width: 42px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .app-main {
+    padding-block: 32px 48px;
+  }
+}

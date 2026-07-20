@@ -1,0 +1,35 @@
+<div
+  class="rate"
+  [class.rate--compact]="compact"
+  [class.rate--atypical]="!typical"
+  [attr.aria-label]="
+    (rate | capRate) +
+    '. ' +
+    (typical ? 'Within the typical 5 to 12 percent range.' : 'Outside the typical 5 to 12 percent range.')
+  "
+>
+  <div class="rate__topline">
+    <strong class="data-value">{{ rate | capRate }}</strong>
+    <span class="rate__status">
+      <span class="rate__status-dot" aria-hidden="true"></span>
+      {{ typical ? 'Typical' : 'Atypical' }}
+    </span>
+  </div>
+
+  <div class="rate__track" aria-hidden="true">
+    <span
+      class="rate__band"
+      [style.left]="typicalStart"
+      [style.width]="typicalWidth"
+    ></span>
+    <span class="rate__marker" [style.left]="position"></span>
+  </div>
+
+  @if (!compact) {
+    <div class="rate__scale" aria-hidden="true">
+      <span>0%</span>
+      <span class="rate__scale-band">5% typical band 12%</span>
+      <span>16%+</span>
+    </div>
+  }
+</div>

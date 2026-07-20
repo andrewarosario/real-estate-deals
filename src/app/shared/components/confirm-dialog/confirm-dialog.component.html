@@ -1,0 +1,29 @@
+<div class="dialog-backdrop" (click)="cancelled.emit()" (keydown.escape)="cancelled.emit()">
+  <section
+    class="dialog"
+    role="alertdialog"
+    aria-modal="true"
+    aria-labelledby="confirm-dialog-title"
+    aria-describedby="confirm-dialog-message"
+    (click)="$event.stopPropagation()"
+  >
+    <span class="dialog__eyebrow">Please confirm</span>
+    <h2 id="confirm-dialog-title">{{ title }}</h2>
+    <p id="confirm-dialog-message">{{ message }}</p>
+    <div class="dialog__actions">
+      <button type="button" class="button button--quiet" appAutofocus (click)="cancelled.emit()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="button"
+        [class.button--danger]="tone === 'danger'"
+        [class.button--primary]="tone === 'primary'"
+        data-testid="confirm-action"
+        (click)="confirmed.emit()"
+      >
+        {{ confirmLabel }}
+      </button>
+    </div>
+  </section>
+</div>
