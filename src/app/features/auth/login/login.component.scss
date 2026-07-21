@@ -89,67 +89,6 @@
   line-height: 1.7;
 }
 
-.market-band {
-  max-width: 520px;
-  padding: 20px 22px;
-  border: 1px solid rgb(255 255 255 / 14%);
-  border-radius: var(--radius-md);
-  background: rgb(255 255 255 / 7%);
-  backdrop-filter: blur(10px);
-}
-
-.market-band__label {
-  color: rgb(255 255 255 / 62%);
-  font-size: 0.66rem;
-  font-weight: 800;
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-}
-
-.market-band__track {
-  position: relative;
-  height: 5px;
-  margin-block: 14px 8px;
-  border-radius: 10px;
-  background: rgb(255 255 255 / 18%);
-}
-
-.market-band__track span {
-  position: absolute;
-  left: 31%;
-  width: 45%;
-  height: 100%;
-  border-radius: inherit;
-  background: var(--color-mint);
-}
-
-.market-band__track i {
-  position: absolute;
-  top: 50%;
-  left: 54%;
-  width: 13px;
-  height: 13px;
-  border: 2px solid var(--color-ink);
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 0 0 1px #fff;
-  transform: translate(-50%, -50%);
-}
-
-.market-band__values {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  color: rgb(255 255 255 / 58%);
-  font-size: 0.68rem;
-}
-
-.market-band__values strong {
-  color: var(--color-mint);
-  font-family: var(--font-interface);
-  letter-spacing: 0.02em;
-}
-
 .login-panel {
   display: grid;
   place-items: center;
