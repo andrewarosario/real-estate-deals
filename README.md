@@ -38,8 +38,12 @@ Open `http://localhost:4200`.
 
 ```bash
 npm run build
+npm run lint
 npm run test:ci
 ```
+
+ESLint checks both TypeScript and Angular templates using the Angular ESLint recommended
+and template accessibility rules.
 
 Tests run with Jest through `jest-preset-angular`. Use `npm test` for a single local run,
 `npm run test:watch` while developing, or `npm run test:coverage` for a coverage report.

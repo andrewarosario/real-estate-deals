@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+} from '@angular/core';
 
 import { AutofocusDirective } from '../../directives/autofocus.directive';
 
@@ -18,4 +25,9 @@ export class ConfirmDialogComponent {
 
   @Output() readonly confirmed = new EventEmitter<void>();
   @Output() readonly cancelled = new EventEmitter<void>();
+
+  @HostListener('keydown.escape')
+  protected cancelOnEscape(): void {
+    this.cancelled.emit();
+  }
 }

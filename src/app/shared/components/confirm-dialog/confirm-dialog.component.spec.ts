@@ -38,7 +38,7 @@ describe('ConfirmDialogComponent', () => {
     const backdrop = fixture.nativeElement.querySelector('.dialog-backdrop') as HTMLElement;
 
     (fixture.nativeElement.querySelector('.button--quiet') as HTMLButtonElement).click();
-    backdrop.click();
+    (fixture.nativeElement.querySelector('.dialog-backdrop__dismiss') as HTMLButtonElement).click();
     backdrop.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
 
     expect(cancelled).toHaveBeenCalledTimes(3);

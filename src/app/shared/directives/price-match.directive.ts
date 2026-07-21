@@ -1,12 +1,10 @@
-import { Directive, Input } from '@angular/core';
+import { Directive, HostBinding, Input } from '@angular/core';
 
 @Directive({
   selector: '[appPriceMatch]',
   standalone: true,
-  host: {
-    '[class.price-match]': 'appPriceMatch',
-  },
 })
 export class PriceMatchDirective {
+  @HostBinding('class.price-match')
   @Input() appPriceMatch = false;
 }

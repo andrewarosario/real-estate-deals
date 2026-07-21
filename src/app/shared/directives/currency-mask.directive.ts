@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, forwardRef, inject } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, forwardRef, inject } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 interface MaskedCurrencyValue {
@@ -21,10 +21,6 @@ const currencyNumberFormatter = new Intl.NumberFormat('en-US', {
       multi: true,
     },
   ],
-  host: {
-    '(input)': 'handleInput()',
-    '(blur)': 'handleBlur()',
-  },
 })
 export class CurrencyMaskDirective implements ControlValueAccessor {
   private readonly element = inject(ElementRef<HTMLInputElement>);
@@ -51,12 +47,14 @@ export class CurrencyMaskDirective implements ControlValueAccessor {
     this.element.nativeElement.disabled = disabled;
   }
 
+  @HostListener('input')
   protected handleInput(): void {
     const maskedValue = this.maskValue(this.element.nativeElement.value);
     this.element.nativeElement.value = maskedValue.display;
     this.onChange?.(maskedValue.value);
   }
 
+  @HostListener('blur')
   protected handleBlur(): void {
     const maskedValue = this.maskValue(this.element.nativeElement.value);
     this.element.nativeElement.value =

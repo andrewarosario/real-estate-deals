@@ -1,11 +1,16 @@
-<div class="dialog-backdrop" (click)="cancelled.emit()" (keydown.escape)="cancelled.emit()">
+<div class="dialog-backdrop">
+  <button
+    type="button"
+    class="dialog-backdrop__dismiss"
+    aria-label="Close confirmation dialog"
+    (click)="cancelled.emit()"
+  ></button>
   <section
     class="dialog"
     role="alertdialog"
     aria-modal="true"
     aria-labelledby="confirm-dialog-title"
     aria-describedby="confirm-dialog-message"
-    (click)="$event.stopPropagation()"
   >
     <span class="dialog__eyebrow">Please confirm</span>
     <h2 id="confirm-dialog-title">{{ title }}</h2>
