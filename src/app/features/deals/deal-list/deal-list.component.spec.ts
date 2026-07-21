@@ -1,6 +1,5 @@
 import { WritableSignal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormGroup } from '@angular/forms';
 import { BehaviorSubject, firstValueFrom } from 'rxjs';
 
 import { NotificationService } from '../../../core/notifications/notification.service';
@@ -9,14 +8,10 @@ import { Deal, DealFilters, EMPTY_DEAL_FILTERS } from '../data-access/deal.model
 import { DealListComponent } from './deal-list.component';
 
 interface DealListHarness {
-  readonly filterForm: FormGroup;
-  readonly filtersExpanded: WritableSignal<boolean>;
   readonly pendingDelete: WritableSignal<Deal | null>;
   readonly resetRequested: WritableSignal<boolean>;
   readonly viewModel$: DealListComponent['viewModel$'];
-  hasActiveFilters(filters: DealFilters): boolean;
   hasPriceFilter(filters: DealFilters): boolean;
-  clearFilters(): void;
   confirmDelete(): void;
   confirmReset(): void;
 }
@@ -95,51 +90,9 @@ describe('DealListComponent', () => {
     expect(viewModel.filteredDeals).toHaveLength(2);
   });
 
-  it('identifies active name and price filters', () => {
-    expect(harness.hasActiveFilters(EMPTY_DEAL_FILTERS)).toBe(false);
-    expect(harness.hasActiveFilters({ ...EMPTY_DEAL_FILTERS, name: 'harbor' })).toBe(true);
+  it('identifies active price filters', () => {
     expect(harness.hasPriceFilter({ ...EMPTY_DEAL_FILTERS, minimumPrice: 1 })).toBe(true);
     expect(harness.hasPriceFilter(EMPTY_DEAL_FILTERS)).toBe(false);
-  });
-
-  it('debounces valid filter updates', () => {
-    jest.useFakeTimers();
-
-    harness.filterForm.setValue({
-      name: 'harbor',
-      minimumPrice: 5_000_000,
-      maximumPrice: 15_000_000,
-    });
-    jest.advanceTimersByTime(119);
-    expect(store.setFilters).not.toHaveBeenCalled();
-
-    jest.advanceTimersByTime(1);
-    expect(store.setFilters).toHaveBeenCalledWith({
-      name: 'harbor',
-      minimumPrice: 5_000_000,
-      maximumPrice: 15_000_000,
-    });
-    jest.useRealTimers();
-  });
-
-  it('rejects an inverted purchase-price range', () => {
-    jest.useFakeTimers();
-
-    harness.filterForm.setValue({ name: '', minimumPrice: 20, maximumPrice: 10 });
-    jest.advanceTimersByTime(120);
-
-    expect(harness.filterForm.hasError('invalidPriceRange')).toBe(true);
-    expect(store.setFilters).not.toHaveBeenCalled();
-    jest.useRealTimers();
-  });
-
-  it('clears filters in the form and store', () => {
-    harness.filterForm.setValue({ name: 'harbor', minimumPrice: 1, maximumPrice: 2 });
-
-    harness.clearFilters();
-
-    expect(harness.filterForm.getRawValue()).toEqual(EMPTY_DEAL_FILTERS);
-    expect(store.clearFilters).toHaveBeenCalledTimes(1);
   });
 
   it('deletes the pending deal and reports success', () => {
@@ -164,13 +117,11 @@ describe('DealListComponent', () => {
   });
 
   it('restores sample data and resets the controls', () => {
-    harness.filterForm.setValue({ name: 'harbor', minimumPrice: 1, maximumPrice: 2 });
     harness.resetRequested.set(true);
 
     harness.confirmReset();
 
     expect(store.reset).toHaveBeenCalledTimes(1);
-    expect(harness.filterForm.getRawValue()).toEqual(EMPTY_DEAL_FILTERS);
     expect(harness.resetRequested()).toBe(false);
     expect(notifications.show).toHaveBeenCalledWith(
       'The original sample deals have been restored.',

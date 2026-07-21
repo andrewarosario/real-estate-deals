@@ -1,0 +1,92 @@
+<section
+  class="filter-workbench"
+  [class.filter-workbench--expanded]="filtersExpanded()"
+  aria-labelledby="filter-title"
+>
+  <div class="filter-workbench__heading">
+    <div>
+      <span class="filter-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4" /></svg>
+      </span>
+      <div>
+        <h2 id="filter-title">Filter deals</h2>
+        <p>{{ filteredCount }} of {{ totalCount }} shown</p>
+      </div>
+    </div>
+    <div class="filter-workbench__actions">
+      @if (hasActiveFilters) {
+        <button type="button" class="clear-filter" (click)="clearFilters()">Clear filters</button>
+      }
+      <button
+        type="button"
+        class="filter-toggle"
+        [attr.aria-expanded]="filtersExpanded()"
+        aria-controls="deal-filter-form"
+        (click)="filtersExpanded.set(!filtersExpanded())"
+      >
+        {{ filtersExpanded() ? 'Hide' : 'Show' }} filters
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <form
+    id="deal-filter-form"
+    class="filter-form"
+    [formGroup]="filterForm"
+    aria-label="Deal filters"
+  >
+    <div class="filter-field filter-field--name">
+      <label for="deal-name-filter">Deal name</label>
+      <div class="input-with-icon">
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-4-4"></path>
+        </svg>
+        <input
+          id="deal-name-filter"
+          type="search"
+          formControlName="name"
+          placeholder="Search by deal name"
+          autocomplete="off"
+        >
+      </div>
+    </div>
+
+    <div class="filter-field">
+      <label for="minimum-price">Minimum price</label>
+      <div class="money-input">
+        <span aria-hidden="true">$</span>
+        <input
+          id="minimum-price"
+          type="number"
+          min="0"
+          step="100000"
+          inputmode="decimal"
+          formControlName="minimumPrice"
+          placeholder="No minimum"
+        >
+      </div>
+    </div>
+
+    <div class="filter-field">
+      <label for="maximum-price">Maximum price</label>
+      <div class="money-input">
+        <span aria-hidden="true">$</span>
+        <input
+          id="maximum-price"
+          type="number"
+          min="0"
+          step="100000"
+          inputmode="decimal"
+          formControlName="maximumPrice"
+          placeholder="No maximum"
+        >
+      </div>
+    </div>
+  </form>
+
+  @if (filterForm.hasError('invalidPriceRange')) {
+    <p class="filter-error" role="alert">Minimum price cannot be greater than maximum price.</p>
+  }
+</section>
