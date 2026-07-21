@@ -1,13 +1,7 @@
 import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  AbstractControl,
-  FormBuilder,
-  ReactiveFormsModule,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { combineLatest, debounceTime, map } from 'rxjs';
 
@@ -19,15 +13,7 @@ import { HighlightPipe } from '../../../shared/pipes/highlight.pipe';
 import { DealStoreService } from '../data-access/deal-store.service';
 import { Deal, DealFilters } from '../data-access/deal.model';
 import { calculateCapRate, isTypicalCapRate } from '../domain/deal-rules';
-
-function validPriceRange(control: AbstractControl): ValidationErrors | null {
-  const minimum = control.get('minimumPrice')?.value as number | null;
-  const maximum = control.get('maximumPrice')?.value as number | null;
-
-  return minimum !== null && maximum !== null && minimum > maximum
-    ? { invalidPriceRange: true }
-    : null;
-}
+import { validPriceRange } from './valid-price-range.validator';
 
 @Component({
   selector: 'app-deal-list',
