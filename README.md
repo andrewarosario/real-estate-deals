@@ -2,6 +2,8 @@
 
 TermSheet is a focused Angular 17 demo for managing a browser-local real estate deal book. It calculates Cap Rate automatically, shows whether a rate is inside the typical 5%–12% band, and keeps the complete workflow behind a labeled demo login.
 
+**Live application:** https://andrewarosario.github.io/real-estate-deals/
+
 ## Demo login
 
 - Username: `analyst`
