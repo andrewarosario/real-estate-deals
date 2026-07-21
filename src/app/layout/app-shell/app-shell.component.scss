@@ -67,26 +67,6 @@
 .app-header__session {
   display: flex;
   align-items: center;
-  gap: 18px;
-}
-
-.demo-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: var(--color-muted);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-
-.demo-badge span {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--color-mint);
-  box-shadow: 0 0 0 4px rgb(34 236 207 / 18%);
 }
 
 .logout-button {
@@ -128,8 +108,7 @@
     width: min(100% - 32px, 1380px);
   }
 
-  .app-header__nav,
-  .demo-badge {
+  .app-header__nav {
     display: none;
   }
 
