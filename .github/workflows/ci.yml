@@ -34,5 +34,38 @@ jobs:
       - name: Test
         run: npm run test:ci
 
-      - name: Build
-        run: npm run build
+      - name: Build for GitHub Pages
+        run: npm run build -- --base-href /real-estate-deals/
+
+      - name: Add Angular routing fallback
+        if: github.event_name == 'push'
+        run: cp dist/termsheet/browser/index.html dist/termsheet/browser/404.html
+
+      - name: Configure GitHub Pages
+        if: github.event_name == 'push'
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/termsheet/browser
+
+  deploy:
+    name: Deploy GitHub Pages
+    if: github.event_name == 'push'
+    needs: quality
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
