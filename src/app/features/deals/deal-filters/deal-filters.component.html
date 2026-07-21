@@ -59,12 +59,12 @@
         <span aria-hidden="true">$</span>
         <input
           id="minimum-price"
-          type="number"
-          min="0"
-          step="100000"
+          type="text"
           inputmode="decimal"
           formControlName="minimumPrice"
           placeholder="No minimum"
+          autocomplete="off"
+          appCurrencyMask
         >
       </div>
     </div>
@@ -75,12 +75,12 @@
         <span aria-hidden="true">$</span>
         <input
           id="maximum-price"
-          type="number"
-          min="0"
-          step="100000"
+          type="text"
           inputmode="decimal"
           formControlName="maximumPrice"
           placeholder="No maximum"
+          autocomplete="off"
+          appCurrencyMask
         >
       </div>
     </div>

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NotificationService } from '../../../core/notifications/notification.service';
 import { CapRateRailComponent } from '../../../shared/components/cap-rate-rail/cap-rate-rail.component';
 import { AutofocusDirective } from '../../../shared/directives/autofocus.directive';
+import { CurrencyMaskDirective } from '../../../shared/directives/currency-mask.directive';
 import { DealStoreService } from '../data-access/deal-store.service';
 import { Deal, DealDraft } from '../data-access/deal.model';
 import { calculateCapRate, isTypicalCapRate } from '../domain/deal-rules';
@@ -13,7 +14,13 @@ import { calculateCapRate, isTypicalCapRate } from '../domain/deal-rules';
 @Component({
   selector: 'app-deal-form',
   standalone: true,
-  imports: [AutofocusDirective, CapRateRailComponent, ReactiveFormsModule, RouterLink],
+  imports: [
+    AutofocusDirective,
+    CapRateRailComponent,
+    CurrencyMaskDirective,
+    ReactiveFormsModule,
+    RouterLink,
+  ],
   templateUrl: './deal-form.component.html',
   styleUrl: './deal-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

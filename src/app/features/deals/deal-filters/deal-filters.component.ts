@@ -12,13 +12,14 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 
+import { CurrencyMaskDirective } from '../../../shared/directives/currency-mask.directive';
 import { DealFilters, EMPTY_DEAL_FILTERS } from '../data-access/deal.model';
 import { validPriceRange } from './valid-price-range.validator';
 
 @Component({
   selector: 'app-deal-filters',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [CurrencyMaskDirective, ReactiveFormsModule],
   templateUrl: './deal-filters.component.html',
   styleUrl: './deal-filters.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

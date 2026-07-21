@@ -88,12 +88,12 @@
           <span aria-hidden="true">$</span>
           <input
             id="purchase-price"
-            type="number"
-            min="0.01"
-            step="1000"
+            type="text"
             inputmode="decimal"
             formControlName="purchasePrice"
             placeholder="0"
+            autocomplete="off"
+            appCurrencyMask
             [attr.aria-invalid]="
               form.controls.purchasePrice.invalid && form.controls.purchasePrice.touched
             "
@@ -111,11 +111,13 @@
           <span aria-hidden="true">$</span>
           <input
             id="noi"
-            type="number"
-            step="1000"
+            type="text"
             inputmode="decimal"
             formControlName="noi"
             placeholder="0"
+            autocomplete="off"
+            appCurrencyMask
+            [appCurrencyMaskAllowNegative]="true"
             [attr.aria-invalid]="form.controls.noi.invalid && form.controls.noi.touched"
           >
           <small>USD</small>
